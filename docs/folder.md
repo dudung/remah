@@ -2,10 +2,10 @@
 structure of the folders
 
 ```
-granular-system/
+remah/
 │
 ├── src/
-│   └── butiranx/
+│   └── remah/
 │       ├── __init__.py
 │       ├── module1.py
 │       ├── module2.py
