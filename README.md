@@ -2,7 +2,7 @@
 mixed modeling approaches
 
 
-## install
+## installation
 ```
 $ pip install remah
 Collecting remah
@@ -27,7 +27,7 @@ Required-by:
 ```
 
 
-## use
+## usage
 ```
 $ python
 Python 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)] on win32
@@ -74,7 +74,7 @@ OK
 ```
 
 
-## uninstall
+## uninstallation
 ```
 $ pip uninstall remah
 Found existing installation: remah 0.0.5
@@ -124,16 +124,16 @@ Ran 1 test in 0.000s
 FAILED (errors=1)
 ```
 
-## release
+## releases
 Use following steps to create a new release
 + Edit `setup.py`, advance version number, save it.
 + Commit and push the work.
-+ Visit [releases page](https://github.com/dudung/remah/releases).
-+ Draft a new release
++ Visit [releases page](https://github.com/dudung/remah/releases) of the repository.
++ Draft a new release.
 + Choose a tag, find or create new one.
 + Generate release notes if necessary.
 + Fill release title and describe the release.
 + Set as the latest release.
 + Publish release.
 
-After a few time visit the page on PyPi https://pypi.org/project/remah/.
+After a few minutes visit the page on PyPi https://pypi.org/project/remah/.
