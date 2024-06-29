@@ -6,16 +6,16 @@ mixed modeling approaches
 ```
 $ pip install remah
 Collecting remah
-  Downloading remah-0.0.0-py3-none-any.whl.metadata (312 bytes)
-Downloading remah-0.0.0-py3-none-any.whl (1.9 kB)
+  Using cached remah-0.0.1-py3-none-any.whl.metadata (830 bytes)
+Using cached remah-0.0.1-py3-none-any.whl (2.1 kB)
 Installing collected packages: remah
-Successfully installed remah-0.0.0
+Successfully installed remah-0.0.1
 ```
 
 ```
 pip show remah
 Name: remah
-Version: 0.0.0
+Version: 0.0.1
 Summary: python package for mixed modeling approaches
 Home-page: https://github.com/dudung/remah
 Author: Sparisoma Viridi
