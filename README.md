@@ -124,7 +124,7 @@ Ran 1 test in 0.000s
 FAILED (errors=1)
 ```
 
-## release
+## releases
 Use following steps to create a new release
 + Edit `setup.py`, advance version number, save it.
 + Commit and push the work.
@@ -136,4 +136,4 @@ Use following steps to create a new release
 + Set as the latest release.
 + Publish release.
 
-After a few time visit the page on PyPi https://pypi.org/project/remah/.
+After a few minutes visit the page on PyPi https://pypi.org/project/remah/.
