@@ -23,5 +23,5 @@ Author-email: dudung@gmail.com
 License: MIT
 Location: V:\tf\Lib\site-packages
 Requires:
-Required-by:Required-by:
+Required-by:
 ```
