@@ -128,8 +128,8 @@ FAILED (errors=1)
 Use following steps to create a new release
 + Edit `setup.py`, advance version number, save it.
 + Commit and push the work.
-+ Visit [releases page](https://github.com/dudung/remah/releases).
-+ Draft a new release
++ Visit [releases page](https://github.com/dudung/remah/releases) of the repository.
++ Draft a new release.
 + Choose a tag, find or create new one.
 + Generate release notes if necessary.
 + Fill release title and describe the release.
