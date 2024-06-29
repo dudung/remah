@@ -2,11 +2,16 @@ from setuptools import setup, find_packages
 
 setup(
     name='remah',
-    version='0.0.2',
-    packages=find_packages(),
+    version='0.0.3',
+    packages=find_packages(where='src'),
+    package_dir={'': 'src'},
     install_requires=[
-        # List your project dependencies here
+        # Your dependencies
     ],
+    tests_require=[
+        'unittest',
+    ],
+    test_suite='tests',
     entry_points={
         'console_scripts': [
             # If you have any console scripts, specify them here
