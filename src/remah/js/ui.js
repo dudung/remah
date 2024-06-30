@@ -33,17 +33,9 @@ function uiStyle0() {
     border = '0px solid black';
     background = 'none';
     width = '200px';
-    height = '204px';
+    height = '203px';
     float = 'left';
   }
-  
-  var inputArea = document.createElement('textarea');
-  with(inputArea.style) {
-    width = '193px';
-    height = '151px';
-    overflowY = 'scroll';
-  }
-  inputArea.name = "Input";
   
   var model = document.createElement('select');
   with(model.style) {
@@ -61,7 +53,17 @@ function uiStyle0() {
     opt.value = i;
     opt.innerHTML = v;
     model.add(opt);
-  }    
+  }
+  
+  var inputArea = document.createElement('textarea');
+  with(inputArea.style) {
+    width = '193px';
+    height = '155px';
+    overflowY = 'scroll';
+    border = '1px solid #888';
+  }
+  inputArea.name = "Input";
+  inputArea.disabled = true;
   
   var bClear = document.createElement('button');
   bClear.innerHTML = 'Clear';
@@ -115,12 +117,12 @@ function uiStyle0() {
   outputArea.name = "Oputput";
   
   outterDiv.appendChild(leftDiv);
-    leftDiv.appendChild(inputArea);
     leftDiv.appendChild(model);
     leftDiv.appendChild(bClear);
     leftDiv.appendChild(bLoad);
     leftDiv.appendChild(bRead);
     leftDiv.appendChild(bStart);
+    leftDiv.appendChild(inputArea);
   
   outterDiv.appendChild(can);
   outterDiv.appendChild(outputArea);
