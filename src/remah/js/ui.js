@@ -120,8 +120,8 @@ function uiStyle0() {
   
   outterDiv.appendChild(leftDiv);
     leftDiv.appendChild(model);
-    leftDiv.appendChild(bClear);
     leftDiv.appendChild(bLoad);
+    leftDiv.appendChild(bClear);
     leftDiv.appendChild(bRead);
     leftDiv.appendChild(bStart);
     leftDiv.appendChild(inputArea);

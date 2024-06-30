@@ -8,14 +8,22 @@
 */
 
 
+//
+let el = {};
+
+
 // Set events between elements
 function setEventsForElementsWithId(list) {
-  let el = {};
   for(const [i, val] of list.entries()) {
     el[val] = window[list[i]];
   }
-  console.log(list);
-  console.log(el);
   
-  el['sel_Model'].addEventListener('change', (e) => {console.log(e)});
+  el['sel_Model'].addEventListener('change', (e) => {selChange(e)});
+}
+
+
+function selChange(e) {
+  if(e.target.selectedIndex > 0) {
+    el['btn_Load'].disabled = false;
+  }
 }
