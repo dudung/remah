@@ -8,18 +8,10 @@
 */
 
 
-// Call main function
-main();
-
-
-// Define main function
-function main() {
-  uiStyle0();
-}
-
-
 // Create UI with style 0
 function uiStyle0() {
+  var elList = [];
+  
   var outterDiv = document.createElement('div');
   with(outterDiv.style) {
     border = '0px solid #aaa';
@@ -39,14 +31,15 @@ function uiStyle0() {
   
   var model = document.createElement('select');
   with(model.style) {
-    width = "199px";
+    width = '199px';
   }
-  model.name = "Model";
+  model.name = 'sel-Model';
+  elList.push(model.name);
   
   var options = [
-    'Model &ndash; system',
-    'MC &ndash; random motion',
-    'DEM &ndash; bouncing disc',
+    "Model &ndash; system",
+    "MC &ndash; random motion",
+    "DEM &ndash; bouncing disc",
   ];
   for(const [i, v] of options.entries()) {
     var opt = document.createElement('option');
@@ -62,40 +55,45 @@ function uiStyle0() {
     overflowY = 'scroll';
     border = '1px solid #888';
   }
-  inputArea.name = "Input";
+  inputArea.name = 'txa-Input';
   inputArea.disabled = true;
+  elList.push(inputArea.name);
   
   var bClear = document.createElement('button');
   bClear.innerHTML = 'Clear';
   with(bClear.style) {
     width = '50px';
   }
-  bClear.name = "Clear";
+  bClear.name = 'btn-Clear';
   bClear.disabled = true;
+  elList.push(bClear.name);
 
   var bLoad = document.createElement('button');
   bLoad.innerHTML = 'Load';
   with(bLoad.style) {
     width = '50px';
   }
-  bLoad.name = "Load";
+  bLoad.name = 'btn-Load';
   bLoad.disabled = true;
+  elList.push(bLoad.name);
 
   var bRead = document.createElement('button');
   bRead.innerHTML = 'Read';
   with(bRead.style) {
     width = '50px';
   }
-  bRead.name = "Read";
+  bRead.name = 'btn-Read';
   bRead.disabled = true;
+  elList.push(bRead.name);
 
   var bStart = document.createElement('button');
   bStart.innerHTML = 'Start';
   with(bStart.style) {
     width = '49px';
   }
-  bStart.name = "Start";
+  bStart.name = 'btn-Start';
   bStart.disabled = true;
+  elList.push(bStart.name);
   
   var can = document.createElement('canvas');
   with(can.style) {
@@ -105,6 +103,8 @@ function uiStyle0() {
     height = '200px';
     float = 'left';
   }
+  can.name = 'can-Canvas';
+  elList.push(can.name);
   
   var outputArea = document.createElement('textarea');
   with(outputArea.style) {
@@ -114,7 +114,8 @@ function uiStyle0() {
     border = '1px solid #888';
   }
   outputArea.disabled = true;
-  outputArea.name = "Oputput";
+  outputArea.name = 'txa-Output';
+  elList.push(outputArea.name);
   
   outterDiv.appendChild(leftDiv);
     leftDiv.appendChild(model);
@@ -128,4 +129,6 @@ function uiStyle0() {
   outterDiv.appendChild(outputArea);
   
   document.body.appendChild(outterDiv);
+  
+  return elList;
 }
