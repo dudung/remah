@@ -33,7 +33,7 @@ function uiStyle0() {
   with(model.style) {
     width = '199px';
   }
-  model.id = 'sel-Model';
+  model.id = 'sel_Model';
   elIdList.push(model.id);
   
   var options = [
@@ -56,7 +56,7 @@ function uiStyle0() {
     overflowY = 'scroll';
     border = '1px solid #888';
   }
-  inputArea.id = 'txa-Input';
+  inputArea.id = 'txa_Input';
   inputArea.disabled = true;
   elIdList.push(inputArea.id);
   
@@ -65,7 +65,7 @@ function uiStyle0() {
   with(bClear.style) {
     width = '50px';
   }
-  bClear.id = 'btn-Clear';
+  bClear.id = 'btn_Clear';
   bClear.disabled = true;
   elIdList.push(bClear.id);
 
@@ -74,7 +74,7 @@ function uiStyle0() {
   with(bLoad.style) {
     width = '50px';
   }
-  bLoad.id = 'btn-Load';
+  bLoad.id = 'btn_Load';
   bLoad.disabled = true;
   elIdList.push(bLoad.id);
 
@@ -83,7 +83,7 @@ function uiStyle0() {
   with(bRead.style) {
     width = '50px';
   }
-  bRead.id = 'btn-Read';
+  bRead.id = 'btn_Read';
   bRead.disabled = true;
   elIdList.push(bRead.id);
 
@@ -92,7 +92,7 @@ function uiStyle0() {
   with(bStart.style) {
     width = '49px';
   }
-  bStart.id = 'btn-Start';
+  bStart.id = 'btn_Start';
   bStart.disabled = true;
   elIdList.push(bStart.id);
   
@@ -104,7 +104,7 @@ function uiStyle0() {
     height = '200px';
     float = 'left';
   }
-  can.id = 'can-Canvas';
+  can.id = 'can_Canvas';
   elIdList.push(can.id);
   
   var outputArea = document.createElement('textarea');
@@ -115,7 +115,7 @@ function uiStyle0() {
     border = '1px solid #888';
   }
   outputArea.disabled = true;
-  outputArea.id = 'txa-Output';
+  outputArea.id = 'txa_Output';
   elIdList.push(outputArea.id);
   
   outterDiv.appendChild(leftDiv);

@@ -8,27 +8,14 @@
 */
 
 
-
-
 // Set events between elements
 function setEventsForElementsWithId(list) {
-  getElementsById(list);
-}
-
-
-// Create elements according its name pattern
-function getElementsById(list) {
-  for(const e of list) {
-    let tag = e;
-    console.log(tag);
+  let el = {};
+  for(const [i, val] of list.entries()) {
+    el[val] = window[list[i]];
   }
-}
-
-
-// Create abbreviation for elements tag
-const elemDict = {
-  'btn': 'button',
-  'can': 'canvas',
-  'sel': 'select',
-  'txa': 'textarea',
+  console.log(list);
+  console.log(els);
+  
+  els['sel_Model'].selectedIndex = 3;
 }
