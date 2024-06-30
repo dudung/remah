@@ -15,7 +15,7 @@ function setEventsForElementsWithId(list) {
     el[val] = window[list[i]];
   }
   console.log(list);
-  console.log(els);
+  console.log(el);
   
-  els['sel_Model'].selectedIndex = 3;
+  el['sel_Model'].addEventListener('change', (e) => {console.log(e)});
 }
