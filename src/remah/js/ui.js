@@ -4,13 +4,13 @@
   
   Sparisoma Viridi | https://github.com/dudung
   
-  20240630 Start creating the UI with style 0.
+  20240630 Creating UI with style 0, elements layout and initial state.
 */
 
 
 // Create UI with style 0
 function uiStyle0() {
-  var elList = [];
+  var elIdList = [];
   
   var outterDiv = document.createElement('div');
   with(outterDiv.style) {
@@ -33,11 +33,12 @@ function uiStyle0() {
   with(model.style) {
     width = '199px';
   }
-  model.name = 'sel-Model';
-  elList.push(model.name);
+  model.id = 'sel-Model';
+  elIdList.push(model.id);
   
   var options = [
     "Model &ndash; system",
+    "None &ndash; static shapes",
     "MC &ndash; random motion",
     "DEM &ndash; bouncing disc",
   ];
@@ -55,45 +56,45 @@ function uiStyle0() {
     overflowY = 'scroll';
     border = '1px solid #888';
   }
-  inputArea.name = 'txa-Input';
+  inputArea.id = 'txa-Input';
   inputArea.disabled = true;
-  elList.push(inputArea.name);
+  elIdList.push(inputArea.id);
   
   var bClear = document.createElement('button');
   bClear.innerHTML = 'Clear';
   with(bClear.style) {
     width = '50px';
   }
-  bClear.name = 'btn-Clear';
+  bClear.id = 'btn-Clear';
   bClear.disabled = true;
-  elList.push(bClear.name);
+  elIdList.push(bClear.id);
 
   var bLoad = document.createElement('button');
   bLoad.innerHTML = 'Load';
   with(bLoad.style) {
     width = '50px';
   }
-  bLoad.name = 'btn-Load';
+  bLoad.id = 'btn-Load';
   bLoad.disabled = true;
-  elList.push(bLoad.name);
+  elIdList.push(bLoad.id);
 
   var bRead = document.createElement('button');
   bRead.innerHTML = 'Read';
   with(bRead.style) {
     width = '50px';
   }
-  bRead.name = 'btn-Read';
+  bRead.id = 'btn-Read';
   bRead.disabled = true;
-  elList.push(bRead.name);
+  elIdList.push(bRead.id);
 
   var bStart = document.createElement('button');
   bStart.innerHTML = 'Start';
   with(bStart.style) {
     width = '49px';
   }
-  bStart.name = 'btn-Start';
+  bStart.id = 'btn-Start';
   bStart.disabled = true;
-  elList.push(bStart.name);
+  elIdList.push(bStart.id);
   
   var can = document.createElement('canvas');
   with(can.style) {
@@ -103,8 +104,8 @@ function uiStyle0() {
     height = '200px';
     float = 'left';
   }
-  can.name = 'can-Canvas';
-  elList.push(can.name);
+  can.id = 'can-Canvas';
+  elIdList.push(can.id);
   
   var outputArea = document.createElement('textarea');
   with(outputArea.style) {
@@ -114,8 +115,8 @@ function uiStyle0() {
     border = '1px solid #888';
   }
   outputArea.disabled = true;
-  outputArea.name = 'txa-Output';
-  elList.push(outputArea.name);
+  outputArea.id = 'txa-Output';
+  elIdList.push(outputArea.id);
   
   outterDiv.appendChild(leftDiv);
     leftDiv.appendChild(model);
@@ -130,5 +131,5 @@ function uiStyle0() {
   
   document.body.appendChild(outterDiv);
   
-  return elList;
+  return elIdList;
 }

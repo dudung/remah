@@ -14,5 +14,5 @@ main();
 // Define main function
 function main() {
   var elementList = uiStyle0();
-  setEvents(elementList);
+  setEventsForElementsWithId(elementList);
 }
