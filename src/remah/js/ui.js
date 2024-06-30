@@ -3,16 +3,22 @@
   Elements for user interface
   
   Sparisoma Viridi | https://github.com/dudung
+  
+  20240630 Start creating the UI with style 0.
 */
 
 
+// Call main function
 main();
 
+
+// Define main function
 function main() {
   uiStyle0();
 }
 
 
+// Create UI with style 0
 function uiStyle0() {
   var outterDiv = document.createElement('div');
   with(outterDiv.style) {
