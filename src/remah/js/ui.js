@@ -55,20 +55,12 @@ function uiStyle0() {
     height = '155px';
     overflowY = 'scroll';
     border = '1px solid #888';
+    fontSize = '12px';
   }
   inputArea.id = 'txa_Input';
   inputArea.disabled = true;
   elIdList.push(inputArea.id);
   
-  var bClear = document.createElement('button');
-  bClear.innerHTML = 'Clear';
-  with(bClear.style) {
-    width = '50px';
-  }
-  bClear.id = 'btn_Clear';
-  bClear.disabled = true;
-  elIdList.push(bClear.id);
-
   var bLoad = document.createElement('button');
   bLoad.innerHTML = 'Load';
   with(bLoad.style) {
@@ -96,6 +88,14 @@ function uiStyle0() {
   bStart.disabled = true;
   elIdList.push(bStart.id);
   
+  var bAbout = document.createElement('button');
+  bAbout.innerHTML = 'About';
+  with(bAbout.style) {
+    width = '50px';
+  }
+  bAbout.id = 'btn_About';
+  elIdList.push(bAbout.id);
+  
   var can = document.createElement('canvas');
   with(can.style) {
     border = '1px solid #888';
@@ -121,9 +121,9 @@ function uiStyle0() {
   outterDiv.appendChild(leftDiv);
     leftDiv.appendChild(model);
     leftDiv.appendChild(bLoad);
-    leftDiv.appendChild(bClear);
     leftDiv.appendChild(bRead);
     leftDiv.appendChild(bStart);
+    leftDiv.appendChild(bAbout);
     leftDiv.appendChild(inputArea);
   
   outterDiv.appendChild(can);
