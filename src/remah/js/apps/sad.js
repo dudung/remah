@@ -30,7 +30,11 @@ function main() {
   
   el.btn.addEventListener('click',
     (e) => {
-      //let params = getParamsFromText(label, el.ta.value);
+      if(e.target.innerHTML == 'Start') {
+        e.target.innerHTML = 'Stop';
+      } else {
+        e.target.innerHTML = 'Start';
+      }
     }
   );
 }
