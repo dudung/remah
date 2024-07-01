@@ -32,11 +32,27 @@ function main() {
     (e) => {
       if(e.target.innerHTML == 'Start') {
         e.target.innerHTML = 'Stop';
+        
+        let params = getParamsFrom(el.ta);
+        simulate(params, el.can);
       } else {
         e.target.innerHTML = 'Start';
       }
     }
   );
+}
+
+
+// Perform simulation
+function simulate(params, can) {
+}
+
+
+// Get parameters from textarea
+function getParamsFrom(ta) {
+  let text = ta.value;
+  let blocks = text.split('\n\n');
+  console.log(blocks);
 }
 
 
