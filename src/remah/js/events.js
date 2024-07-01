@@ -12,6 +12,7 @@
 function setEventsForElementsWithId(list) {
   let sysId = 0;
   let el = {};
+  let shapes = [];
   for(const [i, val] of list.entries()) {
     el[val] = window[list[i]];
   }
@@ -42,6 +43,11 @@ function setEventsForElementsWithId(list) {
   el['btn_Read'].addEventListener('click',
     (e) => {
       el['btn_Start'].disabled = false;
+      if(sysId == 1) {
+        let src = el['txa_Input'].value;
+        let dest = el['can_Canvas'].getContext('2d');
+        drawShapes(src, dest);
+      }
     }
   );
   
@@ -91,4 +97,20 @@ function loadConfiguration(sysId) {
   "line 40,120,30,50\n"
   ];
   return configText[sysId];
+}
+
+function drawShapes(src, dest) {
+  let lines = src.split('\n');
+  let n = lines.length;
+  if(lines[n-1].length == 0);
+  lines.pop();
+  for(const l of lines) {
+    let s = l.split(' ');
+    if(s[0] == 'circle') {
+      [cx, cy, r] = s[1].split(',');
+      dest.beginPath();
+      dest.arc(cx, cy, r, 0, 2*Math.PI);
+      dest.stroke();
+    }
+  }    
 }

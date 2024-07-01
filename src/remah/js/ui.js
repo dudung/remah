@@ -104,6 +104,8 @@ function uiStyle0() {
     height = '200px';
     float = 'left';
   }
+  can.width = '200';
+  can.height = '200';
   can.id = 'can_Canvas';
   elIdList.push(can.id);
   
