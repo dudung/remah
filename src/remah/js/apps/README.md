@@ -1,4 +1,4 @@
 # apps
 Active applications
 
-+ `sad.js`: Stochastic Agent Dynamics.
++ [sad.js](sad.js) Stochastic Agent Dynamics.

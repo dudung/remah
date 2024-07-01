@@ -6,9 +6,29 @@
   Sparisoma Viridi | https://github.com/dudung
   
   20240702
-  - Merge ui.js, event.js, greetings.js to this file.
+  - Merge main.js, ui.js, event.js, greetings.js to this file.
   - Cancel this app, but keep it as documentation only.
 */
+
+
+/*
+  main.js
+  Some tests for functions and methods
+  
+  Sparisoma Viridi | https://github.com/dudung
+  
+  20240630 Test UI style 0 and initial events.
+*/
+
+// Call main function
+main();
+
+
+// Define main function
+function main() {
+  var elementList = uiStyle0();
+  setEventsForElementsWithId(elementList);
+}
 
 
 /*
@@ -280,4 +300,10 @@ function drawShapes(src, dest) {
 // Say hello to text
 function sayHello(text) {
   return 'Hello, ' + text + '!';
+}
+
+
+// Test say hello
+function test_sayHello() {
+  console.log(sayHello("Remah"));
 }
