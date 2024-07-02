@@ -59,6 +59,10 @@ function getParamsFrom(ta) {
 // Load default parameters to textarea as input element.
 function loadDefaultParamsTo(ta) {
   var text = ""
+  text += "INFO\n"
+  text += "WORLD 100 100\n"
+  text += "TYPES 3\n"
+  text += "\n"
   text += "60\n"
   text += ".10 .10 .10\n"
   text += ".10 .00 .10\n"
