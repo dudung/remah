@@ -1,11 +1,14 @@
 /*
   sad.js
   Stochastic Agent Dynamics
-  v0.0.1 - 20240701
+  v0.0.2 - 20240713
 
   Sparisoma Viridi | https://github.com/dudung
   
   # Notes
+  20240713 Try to continue the app after scattered activities.
+  - Dig previous forgotten idea about the app.
+  
   20240702 Continue developing the app.
   
   20240701 Restart first app on Remah.
@@ -79,6 +82,7 @@ function loadDefaultParamsTo(ta) {
   text += ".05 .05 .05\n"
   ta.value = text;
 }
+
 
 // Create ui and return the interactive elements.
 function createUI() {
