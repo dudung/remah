@@ -8,6 +8,7 @@
   # Notes
   20240713 Try to continue the app after scattered activities.
   - Dig previous forgotten idea about the app.
+  - Remove \n in last blocks obtained from textarea.
   
   20240702 Continue developing the app.
   
@@ -53,9 +54,17 @@ function simulate(params, can) {
 
 // Get parameters from textarea
 function getParamsFrom(ta) {
+  // Obtain the blocks from textarea
   let text = ta.value;
   let blocks = text.split('\n\n');
-  console.log(blocks);
+  
+  // Remove \n on the last block
+  let last = blocks.pop();
+  if(last[last.length - 1] == '\n') {
+    last = last.slice(0, -1);
+    console.log('d');
+  }
+  blocks.push(last);
 }
 
 
