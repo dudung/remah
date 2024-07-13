@@ -7,6 +7,7 @@
   
   # Notes
   20240713 Start this utility.
+  - Chose kebab-case over snake_case, camelCase of PascalCase.
 */
 
 
