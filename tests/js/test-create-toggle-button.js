@@ -1,5 +1,5 @@
 /*
-  test-toggle-button.js
+  test-create-toggle-button.js
   Test create and append toggle button
   v0.0.1 - 20240713
 
@@ -12,11 +12,11 @@
 
 
 // Execute main function.
-testCreateStartStopButton();
+testCreateToggleButton();
 
 
 // Define main function.
-function testCreateStartStopButton() {
+function testCreateToggleButton() {
   createToggleButton('Start', 'Stop', buttonClick);
   createToggleButton('Begin', 'End', buttonClick);
   createToggleButton('On', 'Off', buttonClick);
