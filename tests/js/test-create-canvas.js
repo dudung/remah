@@ -7,7 +7,7 @@
   
   # Notes
   20240713 Start this test.
-  - Create multiple canvas elements on show them.
+  - Create multiple canvas elements and show them.
 */
 
 
