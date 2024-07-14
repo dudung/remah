@@ -6,7 +6,7 @@
   Sparisoma Viridi | https://github.com/dudung
   
   # Notes
-  20240714 Create simple app name pogd.
+  20240714 Create simple app named pogd.
   - Create simple app with three elements.
 */
 

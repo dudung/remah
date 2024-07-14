@@ -7,7 +7,7 @@
   
   # Notes
   20240714 Start this test.
-  - ..
+  - Test pogd in apps/pogd.js for displaying particles on grid.
 */
 
 
