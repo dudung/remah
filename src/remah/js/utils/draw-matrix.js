@@ -13,7 +13,7 @@
 */
 
 
-// Draw matrix on canvas with black and white colors
+// Draw matrix on canvas with black and white colors.
 function drawMatrixBW(matrix, canvas) {
   let ctx = canvas.getContext('2d');
   

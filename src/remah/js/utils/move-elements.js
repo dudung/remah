@@ -21,7 +21,7 @@ function createMovingButton(defaultCaption, otherCaption, callback) {
   
   return btn;  
   
-  // Handle click event
+  // Handle click event.
   function buttonClick(state) {
     if(state == 1) {
       id = setInterval(moveButton, 1000);
@@ -32,7 +32,7 @@ function createMovingButton(defaultCaption, otherCaption, callback) {
     }
   }
   
-  // Move and stop button using setInterval() and clearInterval()
+  // Move and stop button using setInterval() and clearInterval().
   function moveButton() {
     let left = btn.style.left;
     if(left == '') {

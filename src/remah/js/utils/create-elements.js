@@ -12,7 +12,7 @@
 */
 
 
-// Create button as toggle button
+// Create button as toggle button.
 function createToggleButton(defaultCaption, otherCaption, callback) {
   let btn = document.createElement('button');
   btn.innerHTML = defaultCaption;
@@ -32,7 +32,7 @@ function createToggleButton(defaultCaption, otherCaption, callback) {
 }
 
 
-// Create canvas and append it to document.body
+// Create canvas and append it to document.body.
 function createCanvas(width, height) {
   let can = document.createElement('canvas');
   can.width = width;

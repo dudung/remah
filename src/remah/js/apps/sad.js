@@ -1,11 +1,14 @@
 /*
   sad.js
   Stochastic Agent Dynamics
-  v0.0.2 - 20240713
+  v0.0.3 - 20240714
 
   Sparisoma Viridi | https://github.com/dudung
   
   # Notes
+  20240714 Move layout.
+  - Move createUI() to layouts/layout-sad.js for more use.
+  
   20240713 Try to continue the app after scattered activities.
   - Dig previous forgotten idea about the app.
   - Remove \n in last blocks obtained from textarea.
@@ -47,18 +50,18 @@ function main() {
 }
 
 
-// Perform simulation
+// Perform simulation.
 function simulate(params, can) {
 }
 
 
-// Get parameters from textarea
+// Get parameters from textarea.
 function getParamsFrom(ta) {
-  // Obtain the blocks from textarea
+  // Obtain the blocks from textarea.
   let text = ta.value;
   let blocks = text.split('\n\n');
   
-  // Remove \n on the last block
+  // Remove \n on the last block.
   let last = blocks.pop();
   if(last[last.length - 1] == '\n') {
     last = last.slice(0, -1);
@@ -90,59 +93,4 @@ function loadDefaultParamsTo(ta) {
   text += ".10 .05 .10\n"
   text += ".05 .05 .05\n"
   ta.value = text;
-}
-
-
-// Create ui and return the interactive elements.
-function createUI() {
-  let appDiv = document.createElement('div');
-  with(appDiv.style) {
-    border = '1px solid #eee';
-    width = '400px';
-    height = '302px';
-    background = '#fff';
-  }
-  
-  let can = document.createElement('canvas');
-  with(can) {
-    width = '300';
-    height= '300';
-    with(style) {
-      width = '300px';
-      height= '300px';
-      background = 'white';
-      float = 'left'
-      border = '1px solid #888';
-    }
-  }
-  
-  let ta = document.createElement('textarea');
-  with(ta.style) {
-    width = '91px';
-    height = '274px';
-    overflowY = 'scroll';
-    marginLeft = '1px';
-    marginBottom = '-3px';
-    fontSize = '10px';
-  }
-  
-  let btn = document.createElement('button');
-  btn.innerHTML = 'Start';
-  with(btn.style) {
-    width = '97px';
-    marginLeft = '1px';
-  }
-    
-  document.body.appendChild(appDiv);
-    appDiv.appendChild(can);
-    appDiv.appendChild(ta);
-    appDiv.appendChild(btn);
-  
-  let elems = {
-    can: can,
-    ta: ta,
-    btn: btn,
-  }
-  
-  return elems;
 }

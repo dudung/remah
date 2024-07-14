@@ -24,7 +24,7 @@ function testCreateToggleButton() {
 }
 
 
-// Define the callback function
+// Define the callback function.
 function buttonClick(state) {
   console.log("Status is ", state);
 }

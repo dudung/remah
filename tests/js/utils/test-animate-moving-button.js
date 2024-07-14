@@ -24,25 +24,25 @@ function testCreateMovingButton() {
 }
 
 
-// Callback function for button 1
+// Callback function for button 1.
 function button1Click(state) {
   console.log('button 1 state is', state);
 }
 
 
-// Callback function for button 2
+// Callback function for button 2.
 function button2Click(state) {
   console.log('button 2 state is', state);
 }
 
 
-// Callback function for button 3
+// Callback function for button 3.
 function button3Click(state) {
   console.log('button 3 state is', state);
 }
 
 
-// Callback function for button 4
+// Callback function for button 4.
 function button4Click(state) {
   console.log('button 4 state is', state);
 }
