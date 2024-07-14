@@ -1,15 +1,30 @@
 /*
   create-elements.js
   Create and append elements
-  v0.0.2 - 20240713
+  v0.0.3 - 20240714
 
   Sparisoma Viridi | https://github.com/dudung
   
   # Notes
+  20240714 Show texts in textarea.
+  - Create createTextarea() and fill it with text.
+  
   20240713 Start this utility.
   - Create createCanvas() for drawMatrixBW() in draw-matrix.js.
   - Create simple toggle button from button element, width not fixed.
 */
+
+
+// Create textarea
+function createTextarea(width, height, text) {
+  let ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.width = width + 'px';
+  ta.style.height = height + 'px';
+  ta.style.overflowY = 'scroll';
+  document.body.append(ta);
+  return(ta);
+}
 
 
 // Create button as toggle button.
