@@ -1,18 +1,32 @@
 /*
   create-elements.js
   Create and append elements
-  v0.0.3 - 20240714
+  v0.0.4 - 20240714
 
   Sparisoma Viridi | https://github.com/dudung
   
   # Notes
   20240714 Show texts in textarea.
   - Create createTextarea() and fill it with text.
+  - Create simple button with callback function.
   
   20240713 Start this utility.
   - Create createCanvas() for drawMatrixBW() in draw-matrix.js.
   - Create simple toggle button from button element, width not fixed.
 */
+
+
+// Create button with callback function
+function createButton(caption, callback) {
+  let btn = document.createElement('button');
+  btn.innerHTML = caption;
+  
+  btn.addEventListener('click', callback);
+  
+  document.body.appendChild(btn);
+  return btn;
+}
+
 
 
 // Create textarea
