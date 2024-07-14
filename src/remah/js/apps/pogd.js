@@ -7,16 +7,12 @@
   
   # Notes
   20240714 Create simple app name pogd.
-  - ..
+  - Create simple app with three elements.
 */
 
 
-// Execute main function.
-main();
-
-
 // Define main function.
-function main() {
+function pogd() {
   let config = configParticlesPosition();
   let ta = createTextarea(100, 200, config);
   

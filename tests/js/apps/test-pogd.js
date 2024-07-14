@@ -17,4 +17,5 @@ testPogd();
 
 // Define main function.
 function testPogd() {
+  pogd();
 }
