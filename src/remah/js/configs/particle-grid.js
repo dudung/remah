@@ -31,7 +31,9 @@ function positionMatrixFromConfig(text, rows, cols) {
   for(let p of positions) {
     let i = p[0];
     let j = p[1];
-    if((0 <= i && i < m.length) && (0 <= j && j < m[0].length)) {
+    let colInRange = 0 <= i && i < m.length;
+    let rowInRange = 0 <= j && j < m[0].length;
+    if(rowInRange && colInRange) {
       m[i][j] = 1;
     }
   }
