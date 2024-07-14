@@ -12,12 +12,12 @@
 
 
 // Execute main function.
-testConfigParticlesOnGrid();
+testConfigParticlesPosition();
 
 
 // Define main function.
-function testConfigParticlesOnGrid() {
-  let text = configParticlesOnGrid();
+function testConfigParticlesPosition() {
+  let text = configParticlesPosition();
   
   console.log(text);
 }

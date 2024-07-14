@@ -12,7 +12,7 @@
 
 
 // Create config for particles position on grid.
-function configParticlesOnGrid() {
+function configParticlesPosition() {
   let text = ""
   + "0,0\n"
   + "4,0\n"
