@@ -1,3 +1,4 @@
 # butiran
 !dist
 !lib
+!*.min.js
