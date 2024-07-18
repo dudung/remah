@@ -1,0 +1,51 @@
+[20220913]
+2002 Copy files and folder from https://github.com/dudung/abm-x/tree/master/src/app
+README.md
+abm-md
+abm-odm
+abm-sir
+libs
+2008 Try to complete list of app.
+abm-md ✔ (new) -- still fail
+abm-odm ✔ (new)
+abm-sir ✔ (new)
+abmdif ✔
+abmphasemat ✔
+agglo ✔
+ccsasir ✔
+cppcmf ✔
+fr0sir ✔ (new) -- not work
+gcm2d ✔
+gfhtgr ✔ (new) -- not work
+gpcspp ✔ (new)
+gmpsa ✔
+hc2sgis
+igdensity ✔
+ipendepthf ✔ (new)
+nispm ✔
+mdfcp ✔
+mdfhcp ✔
+mdsgcp ✔ (new)
+mrtatrmjs ✔
+rk2dsp ✔
+scspg ✔
+simlttcg ✔
+spfwfs ✔
+sslssgm ✔
+ssspp ✔
+vratcabm ✔
+windpend ✔
+wtrwgpmmids ✔
+2056 Fin editing.
+
+
+[20190528]
+0239 Reduced libraries are cleaned and compiled properly.
+0251 Create repository in Github.
+0256 Confuse with directory structure, still though.
+0259 Create app/examples for non-app examples and testing.
+0304 Craete app/examples/0000_hello.
+0318 Try to update repository in Github.
+0448 Start cppcmf app.
+1220 Finish at campus and grains requires c1 and c2 color.
+2035 Start scspg app at home.
