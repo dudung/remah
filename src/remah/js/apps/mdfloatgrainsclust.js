@@ -70,7 +70,7 @@ function main() {
 function initParams() {
 	var p = "";
 	p += "# Environment\n";
-	p += "WAMP 0.002\n";
+	p += "WAMP 0.004\n";
 	p += "WTIM 0.500\n";
 	p += "WLEN 0.500\n";
 	p += "LSTP 0.0100\n";
