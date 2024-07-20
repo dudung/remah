@@ -154,7 +154,7 @@ function readParams() {
 	var Nz = NXYZ.z;
 
   // 20240720 for charge particles
-  var N = Nx + Ny + Nz;
+  var N = Nx * Ny * Nz;
   var Nrat = getValue("NRAT").from(taIn);
   var Nptot = Nrat * N;
   
