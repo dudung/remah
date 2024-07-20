@@ -1,5 +1,14 @@
 /*
-	mdfhcp.js
+  mdfloatgrainsclust.js
+  MD simulation of floating grains clustering
+	Sparisoma Viridi | dudung@gmail.com
+  Rizal Kurniadi | rijalk@itb.ac.id
+  
+  20240720
+  1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
+  
+  --
+  mdfhcp.js
 	Molecular dynamics simulation of floating hcp structure
 	
 	Sparisoma Viridi | dudung@gmail.com
@@ -42,6 +51,7 @@ var XMIN, XMAX, YMIN, YMAX, ZMIN, ZMAX;
 var wA, wT, wL;
 var o;
 var buoyant, gravitational, drag, normal, attractive;
+var electrostatic; // 20240720 electrostatic force
 var ND;
 
 // Execute main function
@@ -72,9 +82,11 @@ function initParams() {
 	p += "KNXX 1000\n";
 	p += "GNXX 0.1\n";
 	p += "KAXX 0.01\n";
+	p += "KQXX 0.01\n";  // 20240720 electrostatic constant
 	p += "\n";
 	p += "# Particle\n";
 	p += "RHOG 500.0\n";
+	p += "CHRG 1E-3\n";  // 20240720 charge for prograins, not for neugrains.
 	p += "DIAM 0.1000\n";
 	p += "POST 0.0000 0.0000 0.0000\n";
 	p += "VELO 0.0000 0.0000 0.0000\n";
@@ -88,8 +100,8 @@ function initParams() {
 	p += "TPRC 1\n";
 	p += "\n";
 	p += "# Coordinates\n";
-	p += "RMIN -0.75 -0.25 -0.75\n";
-	p += "RMAX +0.75 +0.25 +0.75\n";
+	p += "RMIN -1.00 -0.25 -1.00\n";
+	p += "RMAX +1.00 +0.25 +1.00\n";
 	p += "\n";
 	
 	params = p;
@@ -123,6 +135,7 @@ function readParams() {
 	t = tbeg;
 
 	var rhog = getValue("RHOG").from(taIn);
+	var chrg = getValue("CHRG").from(taIn);
 	var D = getValue("DIAM").from(taIn);
 	var r = getValue("POST").from(taIn);
 	var v = getValue("VELO").from(taIn);
@@ -142,7 +155,7 @@ function readParams() {
 			for(var iz = 0; iz < Nz; iz++) {
 				oi = new Grain();
 				oi.m = m;
-				oi.q = 0;
+				oi.q = chrg;
 				oi.D = D;
 				
 				var rndx = 0.01 * D * Math.random();
@@ -167,6 +180,7 @@ function readParams() {
 	var kN = getValue("KNXX").from(taIn);
 	var gN = getValue("GNXX").from(taIn);
 	var kA = getValue("KAXX").from(taIn);
+	var kQ = getValue("KQXX").from(taIn); // 20240720
 
 	buoyant = new Buoyant();
 	buoyant.setFluidDensity(rhof);
@@ -183,6 +197,10 @@ function readParams() {
 
 	attractive = new Gravitational();
 	attractive.setConstant(kA);
+  
+  // 20240720 electrostatic force
+	electrostatic = new Electrostatic();
+	electrostatic.setConstant(kQ);
 
 	var rmin = getValue("RMIN").from(taIn);
 	var rmax = getValue("RMAX").from(taIn);
