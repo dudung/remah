@@ -6,6 +6,7 @@
   
   20240720
   1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
+  1411 Fix false edit between apps and temp for mdfloatgrainsclust.
   
   --
   mdfhcp.js
@@ -69,9 +70,9 @@ function main() {
 function initParams() {
 	var p = "";
 	p += "# Environment\n";
-	p += "WAMP 0.001\n";
-	p += "WTIM 2.000\n";
-	p += "WLEN 1.000\n";
+	p += "WAMP 0.002\n";
+	p += "WTIM 0.500\n";
+	p += "WLEN 0.500\n";
 	p += "LSTP 0.0100\n";
 	p += "RHOF 1000.0\n";
 	p += "ETAF 8.9E-4\n";
@@ -82,15 +83,16 @@ function initParams() {
 	p += "KNXX 1000\n";
 	p += "GNXX 0.1\n";
 	p += "KAXX 0.01\n";
-	p += "KQXX 0.01\n";  // 20240720 electrostatic constant
+	p += "KQXX 0.017\n";  // 20240720 electrostatic constant
 	p += "\n";
 	p += "# Particle\n";
 	p += "RHOG 500.0\n";
-	p += "CHRG 1E-3\n";  // 20240720 charge for prograins, not for neugrains.
+	p += "CHRG 0.2\n";  // 20240720 charge for prograins, not for neugrains
 	p += "DIAM 0.1000\n";
-	p += "POST 0.0000 0.0000 0.0000\n";
+	p += "POST -0.500 0.0000 0.0000\n";
 	p += "VELO 0.0000 0.0000 0.0000\n";
-	p += "NXYZ 2 1 2\n";
+	p += "NXYZ 4 1 4\n";
+	p += "NRAT 0.5\n"; // 20240720 ratio of prograins to neugrains [0, 1]
 	p += "\n";
 	p += "# Iteration\n";
 	p += "TBEG 0\n";
@@ -140,6 +142,7 @@ function readParams() {
 	var r = getValue("POST").from(taIn);
 	var v = getValue("VELO").from(taIn);
 	var NXYZ = getValue("NXYZ").from(taIn);
+	
 
 	var V = (Math.PI / 6) * D * D * D;
 	var m = rhog * V;
@@ -150,13 +153,27 @@ function readParams() {
 	var Ny = NXYZ.y;
 	var Nz = NXYZ.z;
 
+  // 20240720 for charge particles
+  var N = Nx + Ny + Nz;
+  var Nrat = getValue("NRAT").from(taIn);
+  var Nptot = Nrat * N;
+  
+  var Np = 0;
 	for(var ix = 0; ix < Nx; ix++) {
 		for(var iy = 0; iy < Ny; iy++) {
 			for(var iz = 0; iz < Nz; iz++) {
 				oi = new Grain();
 				oi.m = m;
-				oi.q = chrg;
 				oi.D = D;
+        
+        // 20240720 random number
+        let rnd = Math.random();
+        if(rnd < Nrat && Np < Nptot) {
+          oi.q = chrg;
+          Np += 1;
+        } else {
+          oi.q = 0;
+        }
 				
 				var rndx = 0.01 * D * Math.random();
 				var rndy = 0.00 * D * Math.random();
@@ -545,6 +562,16 @@ function simulate() {
 		}
 		F = Vect3.add(F, Fa);
 		
+		// 20240720 Calculate electrostatic force
+		var Fq = new Vect3();
+		for(var j = 0; j < o.length; j++) {
+			if(j != i) {
+				var Fqi = electrostatic.force(o[i], o[j]);
+				Fq = Vect3.add(Fq, Fqi);
+			}
+		}
+		F = Vect3.add(F, Fq);
+    
 		SF.push(F);
 	}
 	
@@ -661,6 +688,8 @@ function draw() {
 				}
 				
 				cx.beginPath();
+        
+        /*
 				if(o.c instanceof Array) {
 					cx.strokeStyle = o.c[0];
 					if(o.c.length > 1) {
@@ -669,14 +698,31 @@ function draw() {
 				} else {
 					cx.strokeStyle = o.c;
 				}
+        */
 				
+        // 20240720 change style for charged particles
+        if(o.q > 0) {
+          cx.strokeStyle = '#f00';
+          cx.fillStyle = '#fcc';
+        } else {
+          cx.strokeStyle = '#ccc';
+          cx.fillStyle = '#eee';
+        }
+        
+        /*
 				if(o.c instanceof Array && o.c.length > 1) {
 					cx.arc(X, Y, D, 0, 2 * Math.PI);
 					cx.fill();
 				}
+        */
+        
 				cx.lineWidth = "2";
 				cx.arc(X, Y, D, 0, 2 * Math.PI);
 				cx.stroke();
+        
+        // 20240720 fill the grains
+				cx.arc(X, Y, D, 0, 2 * Math.PI);
+				cx.fill();
 			} else if(o instanceof Path) {
 				var qi = o.qi * 2 * Math.PI;
 				var qf = o.qf * 2 * Math.PI;
