@@ -7,6 +7,7 @@
   20240720
   1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
   1411 Fix false edit between apps and temp for mdfloatgrainsclust.
+  1603 Fix total particle in generating prograins by Nrat.
   
   --
   mdfhcp.js
