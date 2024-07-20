@@ -2,10 +2,13 @@
   mdfloatgrainsclust.js
   MD simulation of floating grains clustering
 	Sparisoma Viridi | dudung@gmail.com
-  Rizal Kurniadi | 
+  Rizal Kurniadi | rijalk@itb.ac.id
   
+  20240720
+  1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
   
-	mdfhcp.js
+  --
+  mdfhcp.js
 	Molecular dynamics simulation of floating hcp structure
 	
 	Sparisoma Viridi | dudung@gmail.com
