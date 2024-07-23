@@ -9,6 +9,8 @@
   0755 Start to create HCP.
   1300 After discussion: no wave, circle arrangement, stability for long time, drop big ball as disturbance or fision trigger.
   1428 Set as v2.
+  1441 Remove wave.
+  1544 Create two layer HPC.
   
   20240720
   1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
@@ -132,12 +134,12 @@ class Binding {
 var params;
 var taIn, taOut, caOut1, caOut2, caOut3, caOut4;
 var btLoad, btRead, btStart, btInfo;
-var tbeg, tend, dt, t, Tdata, Tproc, proc, iter, Niter, wstat;
-var dx;
+var tbeg, tend, dt, t, Tdata, Tproc, proc, iter, Niter
+// var dx, wstat; // 2024 v2
 var digit;
 var xmin, ymin, zmin, xmax, ymaz, zmax;
 var XMIN, XMAX, YMIN, YMAX, ZMIN, ZMAX;
-var wA, wT, wL;
+//var wA, wT, wL; // 2024 v2
 var o, pconf;
 var buoyant, gravitational, drag, normal, attractive;
 var electrostatic; // 20240720 electrostatic force
@@ -159,11 +161,13 @@ function main() {
 function initParams() {
 	var p = "";
 	p += "# Environment\n";
-	p += "WAMP 0.01\n";
+/* 20240723 v2
+  p += "WAMP 0.01\n";
 	p += "WTIM 0.200\n";
 	p += "WLEN 0.40\n";
 	p += "WSTA 1\n";  // 20240723 stationary wave
 	p += "LSTP 0.0100\n";
+*/
 	p += "RHOF 1000.0\n";
 	p += "ETAF 8.9E-4\n";
 	p += "TEMF 298\n";
@@ -186,8 +190,10 @@ function initParams() {
 	p += "POST 0.000 0.0000 0.0000\n";
 	p += "VELO 0.0000 0.0000 0.0000\n";
 	p += "NXYZ 10 1 10\n";
+	p += "NPRO 5\n"; // 92
+	p += "NNEU 2\n"; // 148
 	p += "NRAT 0.5\n"; // 20240720 ratio of prograins to neugrains [0, 1]
-	p += "CONF 1\n";
+	p += "CONF 2\n";
 	p += "\n";
 	p += "# Iteration\n";
 	p += "TBEG 0\n";
@@ -222,6 +228,7 @@ function readParams() {
 	Tdata = getValue("TDAT").from(taIn);
 	Tproc = getValue("TPRC").from(taIn);
 
+  /* 20240723 v2
 	wA = getValue("WAMP").from(taIn);
 	wT = getValue("WTIM").from(taIn);
 	wL = getValue("WLEN").from(taIn);
@@ -230,6 +237,7 @@ function readParams() {
   // 20240723 stationary wave
   wstat = getValue("WSTA").from(taIn);
   //console.log(wstat);
+  */
   
   // 20240723 configuration
   pconf = getValue("CONF").from(taIn);
@@ -245,7 +253,10 @@ function readParams() {
 	var r = getValue("POST").from(taIn);
 	var v = getValue("VELO").from(taIn);
 	var NXYZ = getValue("NXYZ").from(taIn);
-	
+  
+  // 20240723 v2
+  let Nneu = getValue("NNEU").from(taIn);
+  let Npro = getValue("NPRO").from(taIn);
 
 	var V = (Math.PI / 6) * D * D * D;
 	var m = rhog * V;
@@ -261,65 +272,99 @@ function readParams() {
   var Nrat = getValue("NRAT").from(taIn);
   var Nptot = Nrat * N;
   
-  var Np = 0;
-	for(var ix = 0; ix < Nx; ix++) {
-		for(var iy = 0; iy < Ny; iy++) {
-			for(var iz = 0; iz < Nz; iz++) {
-				oi = new Grain();
-				oi.m = m;
-				oi.D = D;
-        
-        // 20240720 random number
-        let rnd = Math.random();
-        if(rnd < Nrat && Np < Nptot) {
-          oi.q = chrg;
-          Np += 1;
-        } else {
-          oi.q = 0;
-        }
-        
-        
-        // from befor 20240723.
-        if(pconf == 0) {
-          var rndx = 0.01 * D * Math.random();
-          var rndy = 0.00 * D * Math.random();
-          var rndz = 0.01 * D * Math.random();
+  // 20240723 v2
+  //console.log(pconf);
+  if(pconf == 2) {
+    let Npn = Nneu + Npro;
+    for(let i = 0; i < Npn; i++) {
+      oi = new Grain();
+      oi.m = m;
+      oi.D = D;
+      oi.q = chrg;
+      oi.v = new Vect3(0, 0, 0);
+      oi.c = ["#f00"];
+      
+      if(i == 0) {
+        oi.r = new Vect3(0, 0, 0);
+        //console.log(i);
+      } else if(1 <= i && i <= 6) {
+        let j = i - 1;
+        let rr = D;
+        let xx = rr * Math.cos(j * Math.PI / 3.0);
+        let yy = rr * Math.sin(j * Math.PI / 3.0);        
+        oi.r = new Vect3(xx, 0, yy);
+        //console.log(i);
+      }
+      
+      //console.log(oi);
+      
+      o.push(oi);
+    }
+  }
+  
+  if(pconf < 2) {
+    var Np = 0;
+    for(var ix = 0; ix < Nx; ix++) {
+      for(var iy = 0; iy < Ny; iy++) {
+        for(var iz = 0; iz < Nz; iz++) {
+          oi = new Grain();
+          oi.m = m;
+          oi.D = D;
           
-          var x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx);
-          var y = D * (iy - 0.5 * (Ny - 1)) * (1 + rndy);
-          var z = D * (iz - 0.5 * (Nz - 1)) * (1 + rndz);
-          oi.r = Vect3.add(r, new Vect3(x, y, z));
-          oi.v = v;
-          oi.c = ["#f00"];
-          o.push(oi);
-        }
-        
-        // 20240723 create hexagonal close packed configuration.
-        if(pconf == 1) {
-          var rndx = 0.00 * D * Math.random();
-          var rndy = 0.00 * D * Math.random();
-          var rndz = 0.00 * D * Math.random();
-          
-          var x;
-          if(iz % 2 == 0) {
-            x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx);
+          // 20240720 random number
+          let rnd = Math.random();
+          if(rnd < Nrat && Np < Nptot) {
+            oi.q = chrg;
+            Np += 1;
           } else {
-            x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx + 0.125);
+            oi.q = 0;
           }
           
-          var z = D * (iz - 0.5 * (Nz - 1)) * (1 + rndz + 0.05);
           
-          var y = D * (iy - 0.5 * (Ny - 1)) * (1 + rndy);
-          oi.r = Vect3.add(r, new Vect3(x, y, z));
-          oi.v = v;
-          oi.c = ["#f00"];
-          o.push(oi);
+          // from befor 20240723.
+          if(pconf == 0) {
+            var rndx = 0.01 * D * Math.random();
+            var rndy = 0.00 * D * Math.random();
+            var rndz = 0.01 * D * Math.random();
+            
+            var x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx);
+            var y = D * (iy - 0.5 * (Ny - 1)) * (1 + rndy);
+            var z = D * (iz - 0.5 * (Nz - 1)) * (1 + rndz);
+            oi.r = Vect3.add(r, new Vect3(x, y, z));
+            oi.v = v;
+            oi.c = ["#f00"];
+            o.push(oi);
+          }
+          
+          // 20240723 create hexagonal close packed configuration.
+          if(pconf == 1) {
+            var rndx = 0.00 * D * Math.random();
+            var rndy = 0.00 * D * Math.random();
+            var rndz = 0.00 * D * Math.random();
+            
+            var x;
+            if(iz % 2 == 0) {
+              x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx);
+            } else {
+              x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx + 0.125);
+            }
+            
+            var z = D * (iz - 0.5 * (Nz - 1)) * (1 + rndz + 0.05);
+            
+            var y = D * (iy - 0.5 * (Ny - 1)) * (1 + rndy);
+            oi.r = Vect3.add(r, new Vect3(x, y, z));
+            oi.v = v;
+            oi.c = ["#f00"];
+            o.push(oi);
+          }
+          
+          // Other configuration
+          
         }
-        
-        // Other configuration
-        
-			}
-		}
+      }
+    }
+    
+    console.log(length(o));
 	}
 
 	var rhof = getValue("RHOF").from(taIn);
@@ -360,7 +405,7 @@ function readParams() {
 	binding.setConstants(kB, gB);
   binding.setUncompressedLength(lB);
   binding.setMaxLength(lBmax);
-  console.log(kB, gB, lB, lBmax);
+  //console.log(kB, gB, lB, lBmax);
   
 	var rmin = getValue("RMIN").from(taIn);
 	var rmax = getValue("RMAX").from(taIn);
@@ -660,8 +705,11 @@ function simulate() {
 			}
 		}
 		
+    // 20240723 v2, to speed up.
+    /**/
 		var info = tt + " " + C + " " + NDstra + "\n";
 		addText(info).to(taOut);
+    /**/
 	}
 	
 	// Calculate total force acted on all particles
@@ -676,15 +724,21 @@ function simulate() {
 			
 		// Calculate buoyant force
 		var V = (Math.PI / 6) * o[i].D * o[i].D * o[i].D;
-		var yA = waveFunction(o[i].r.x + 0.5 * o[i].D, t);
-		var yB = waveFunction(o[i].r.x - 0.5 * o[i].D, t);
+		/* 20240723 v2
+    var yA = waveFunction(o[i].r.x + 0.5 * o[i].D, 0);
+		var yB = waveFunction(o[i].r.x - 0.5 * o[i].D, 0);
 		var yf = waveFunction(o[i].r.x, t);
+    */
+    let yA = 0, yB = 0, yf = 0;
 		var Fb = buoyant.force(o[i], yA, yB, yf);
 		F = Vect3.add(F, Fb);
 		
 		// Calculate drag force
+    /* 20240723 v2
 		var dy = waveFunction(o[i].r.x, t + dt)
 			- waveFunction(o[i].r.x, t);
+    */
+    let dy = 0;
 		var vf = new Vect3(0, dy / dt, 0);
 		drag.setField(vf);
 		var Fd = drag.force(o[i])
@@ -749,7 +803,7 @@ function simulate() {
 	}
 	
 	// Create wave curve
-	p = createWave(t);
+	// p = createWave(t); // 20240723 v2
 	
 	// Clear all canvas
 	clearCanvas(caOut1);	
@@ -763,7 +817,7 @@ function simulate() {
 	}
 	
 	// Draw wave in all canvas
-	draw(p).onCanvas(caOut1);
+	//draw(p).onCanvas(caOut1);
 	
 	drawDist(ND, caOut3);
 	
