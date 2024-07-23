@@ -13,6 +13,7 @@
   1544 Create two layer HPC.
   1620 It explodes with uknnown reason.
   1704 Create circle layer per layer, now 150 particles.
+  1820 Add incoming neutron.
   
   20240720
   1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
@@ -179,11 +180,11 @@ function initParams() {
 	p += "KNXX 1000\n";
 	p += "GNXX 10\n";
 	p += "KAXX 0.00\n";
-	p += "KBXX 0.002\n";  // 20240723 binding force
-	p += "GBXX 0.1\n";  // 20240723 binding force
+	p += "KBXX 0.001\n";  // 20240723 binding force
+	p += "GBXX 0.01\n";  // 20240723 binding force
 	p += "LBXX 0.6\n";  // 20240723 binding force
-	p += "LBMX 1.2\n";  // 20240723 binding force
-	p += "KQXX 4.0\n";  // 20240720 electrostatic constant
+	p += "LBMX 0.8\n";  // 20240723 binding force
+	p += "KQXX 1.0\n";  // 20240720 electrostatic constant
 	p += "\n";
 	p += "# Particle\n";
 	p += "RHOG 500.0\n";
@@ -205,8 +206,8 @@ function initParams() {
 	p += "TPRC 1\n";
 	p += "\n";
 	p += "# Coordinates\n";
-	p += "RMIN -2.0 -0.25 -2.0\n";
-	p += "RMAX +2.0 +0.25 +2.0\n";
+	p += "RMIN -5.0 -0.25 -10.0\n";
+	p += "RMAX +15.0 +0.25 +10.0\n";
 	p += "\n";
 	
 	params = p;
@@ -285,13 +286,14 @@ function readParams() {
       
       // 20240723 v2 -- charge for prograins
       let rnd = Math.random();
-      if(rnd < 0.7 && Npro > 0) {
+      if(rnd < 0.5 && Npro > 0) {
         oi.q = chrg;
         Npro--;
       } else {
         oi.q = 0;
         Nneu--;
       }
+      //console.log(Npro, Nneu);
       
       oi.v = new Vect3(0, 0, 0);
       oi.c = ["#f00"];
@@ -424,8 +426,19 @@ function readParams() {
     
     console.log(length(o));
 	}
-
-	var rhof = getValue("RHOF").from(taIn);
+  
+  
+  // 20240723 v2 add bullet
+  let bullet =  new Grain();
+  bullet.m = m;
+  bullet.D = D;
+  bullet.q = 0;
+  bullet.r = new Vect3(-4, 0, 0);
+  bullet.v = new Vect3(300, 0, 0);
+  o.push(bullet);
+  
+  
+	var rhof = getValue("RHOF").from(taIn)
 	var etaf = getValue("ETAF").from(taIn);
 	var Temf = getValue("TEMF").from(taIn);
 	var g = getValue("GACC").from(taIn);
@@ -775,10 +788,9 @@ function simulate() {
 		}
 		
     // 20240723 v2, to speed up.
-    /**/
-		var info = tt + " " + C + " " + NDstra + "\n";
+		//var info = tt + " " + C + " " + NDstra + "\n";
+    let info = tt + '\n';
 		addText(info).to(taOut);
-    /**/
 	}
 	
 	// Calculate total force acted on all particles
@@ -888,7 +900,8 @@ function simulate() {
 	// Draw wave in all canvas
 	//draw(p).onCanvas(caOut1);
 	
-	drawDist(ND, caOut3);
+  // 20240723 v2 -- speed up
+	//drawDist(ND, caOut3);
 	
 	if(t >= tend) {
 		btLoad.disabled = false;
