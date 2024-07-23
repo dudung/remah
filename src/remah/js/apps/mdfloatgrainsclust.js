@@ -7,6 +7,7 @@
   20240723
   0723 Start to implement stationary wave.
   0755 Start to create HCP.
+  1300 After discussion: no wave, circle arrangement, stability for long time, drop big ball as disturbance or fision trigger.
   
   20240720
   1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
