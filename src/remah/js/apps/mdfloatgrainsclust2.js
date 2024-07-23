@@ -11,6 +11,7 @@
   1428 Set as v2.
   1441 Remove wave.
   1544 Create two layer HPC.
+  1620 It explodes with uknnown reason.
   
   20240720
   1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
@@ -179,8 +180,8 @@ function initParams() {
 	p += "KAXX 0.01\n";
 	p += "KBXX 0.02\n";  // 20240723 binding force
 	p += "GBXX 0.1\n";  // 20240723 binding force
-	p += "LBXX 0.2\n";  // 20240723 binding force
-	p += "LBMX 0.4\n";  // 20240723 binding force
+	p += "LBXX 0.1\n";  // 20240723 binding force
+	p += "LBMX 0.2\n";  // 20240723 binding force
 	p += "KQXX 2.0\n";  // 20240720 electrostatic constant
 	p += "\n";
 	p += "# Particle\n";
@@ -190,8 +191,8 @@ function initParams() {
 	p += "POST 0.000 0.0000 0.0000\n";
 	p += "VELO 0.0000 0.0000 0.0000\n";
 	p += "NXYZ 10 1 10\n";
-	p += "NPRO 5\n"; // 92
-	p += "NNEU 2\n"; // 148
+	p += "NPRO 10\n"; // 92
+	p += "NNEU 50\n"; // 148
 	p += "NRAT 0.5\n"; // 20240720 ratio of prograins to neugrains [0, 1]
 	p += "CONF 2\n";
 	p += "\n";
@@ -280,20 +281,40 @@ function readParams() {
       oi = new Grain();
       oi.m = m;
       oi.D = D;
-      oi.q = chrg;
+      
+      // 20240723 v2 -- charge for prograins
+      let rnd = Math.random();
+      if(rnd < 0.7 && Npro > 0) {
+        oi.q = chrg;
+        Npro--;
+      } else {
+        oi.q = 0;
+        Nneu--;
+      }
+      
       oi.v = new Vect3(0, 0, 0);
       oi.c = ["#f00"];
       
       if(i == 0) {
         oi.r = new Vect3(0, 0, 0);
-        //console.log(i);
       } else if(1 <= i && i <= 6) {
         let j = i - 1;
         let rr = D;
         let xx = rr * Math.cos(j * Math.PI / 3.0);
         let yy = rr * Math.sin(j * Math.PI / 3.0);        
         oi.r = new Vect3(xx, 0, yy);
-        //console.log(i);
+      } else if(7 <= i && i <= 18) {
+        let j = i - 1;
+        let rr = 2.3 * D;
+        let xx = rr * Math.cos(j * Math.PI / 6.0 + 0.1);
+        let yy = rr * Math.sin(j * Math.PI / 6.0 + 0.1);        
+        oi.r = new Vect3(xx, 0, yy);
+      } else if(19 <= i && i <= 34) {
+        let j = i - 1;
+        let rr = 3.5 * D;
+        let xx = rr * Math.cos(j * Math.PI / 8.0 + 0.2);
+        let yy = rr * Math.sin(j * Math.PI / 8.0 + 0.2);        
+        oi.r = new Vect3(xx, 0, yy);
       }
       
       //console.log(oi);
@@ -426,6 +447,17 @@ function readParams() {
 	YMAX = 0;
 	ZMIN = -1;
 	ZMAX = 1;
+
+  // 20240723 v2
+	// Clear all canvas
+	clearCanvas(caOut1);	
+	clearCanvas(caOut2);
+  
+	// Draw object in all canvas
+	for(var i = 0; i < o.length; i++) {
+		draw(o[i]).onCanvas(caOut1);
+		draw(o[i], "xz").onCanvas(caOut2);
+	}
 }
 
 
