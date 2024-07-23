@@ -178,11 +178,11 @@ function initParams() {
 	p += "# Interaction\n";
 	p += "KNXX 1000\n";
 	p += "GNXX 10\n";
-	p += "KAXX 0.04\n";
-	p += "KBXX 0.02\n";  // 20240723 binding force
+	p += "KAXX 0.00\n";
+	p += "KBXX 0.002\n";  // 20240723 binding force
 	p += "GBXX 0.1\n";  // 20240723 binding force
-	p += "LBXX 0.55\n";  // 20240723 binding force
-	p += "LBMX 1.0\n";  // 20240723 binding force
+	p += "LBXX 0.6\n";  // 20240723 binding force
+	p += "LBMX 1.2\n";  // 20240723 binding force
 	p += "KQXX 4.0\n";  // 20240720 electrostatic constant
 	p += "\n";
 	p += "# Particle\n";
@@ -193,7 +193,7 @@ function initParams() {
 	p += "VELO 0.0000 0.0000 0.0000\n";
 	p += "NXYZ 10 1 10\n";
 	p += "NPRO 92\n"; // 92
-	p += "NNEU 148\n"; // 148
+	p += "NNEU 146\n"; // 146
 	p += "NRAT 0.5\n"; // 20240720 ratio of prograins to neugrains [0, 1]
 	p += "CONF 2\n";
 	p += "\n";
@@ -339,6 +339,18 @@ function readParams() {
         let rr = 7.6 * D;
         let xx = rr * Math.cos(j * Math.PI / 18.0 + 0.2);
         let yy = rr * Math.sin(j * Math.PI / 18.0 + 0.2);        
+        oi.r = new Vect3(xx, 0, yy);
+      } else if(150 <= i && i <= 190) {
+        let j = i - 150;
+        let rr = 8.7 * D;
+        let xx = rr * Math.cos(j * Math.PI / 20.0 + 0.2);
+        let yy = rr * Math.sin(j * Math.PI / 20.0 + 0.2);        
+        oi.r = new Vect3(xx, 0, yy);
+      } else if(190 <= i && i <= 240) {
+        let j = i - 190;
+        let rr = 9.6 * D;
+        let xx = rr * Math.cos(j * Math.PI / 23.5 + 0.3);
+        let yy = rr * Math.sin(j * Math.PI / 23.5 + 0.3);        
         oi.r = new Vect3(xx, 0, yy);
       }
       
