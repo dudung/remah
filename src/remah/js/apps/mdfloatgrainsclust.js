@@ -4,6 +4,10 @@
 	Sparisoma Viridi | dudung@gmail.com
   Rizal Kurniadi | rijalk@itb.ac.id
   
+  20240723
+  0723 Start to implement stationary wave.
+  0755 Start to create HCP.
+  
   20240720
   1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
   1411 Fix false edit between apps and temp for mdfloatgrainsclust.
@@ -45,13 +49,13 @@
 var params;
 var taIn, taOut, caOut1, caOut2, caOut3, caOut4;
 var btLoad, btRead, btStart, btInfo;
-var tbeg, tend, dt, t, Tdata, Tproc, proc, iter, Niter;
+var tbeg, tend, dt, t, Tdata, Tproc, proc, iter, Niter, wstat;
 var dx;
 var digit;
 var xmin, ymin, zmin, xmax, ymaz, zmax;
 var XMIN, XMAX, YMIN, YMAX, ZMIN, ZMAX;
 var wA, wT, wL;
-var o;
+var o, pconf;
 var buoyant, gravitational, drag, normal, attractive;
 var electrostatic; // 20240720 electrostatic force
 var ND;
@@ -73,7 +77,8 @@ function initParams() {
 	p += "# Environment\n";
 	p += "WAMP 0.004\n";
 	p += "WTIM 0.500\n";
-	p += "WLEN 0.500\n";
+	p += "WLEN 0.450\n";
+	p += "WSTA 1\n";  // 20240723 stationary wave
 	p += "LSTP 0.0100\n";
 	p += "RHOF 1000.0\n";
 	p += "ETAF 8.9E-4\n";
@@ -82,18 +87,19 @@ function initParams() {
 	p += "\n";
 	p += "# Interaction\n";
 	p += "KNXX 1000\n";
-	p += "GNXX 0.1\n";
+	p += "GNXX 0.5\n";
 	p += "KAXX 0.01\n";
-	p += "KQXX 0.017\n";  // 20240720 electrostatic constant
+	p += "KQXX 0.04\n";  // 20240720 electrostatic constant
 	p += "\n";
 	p += "# Particle\n";
 	p += "RHOG 500.0\n";
 	p += "CHRG 0.2\n";  // 20240720 charge for prograins, not for neugrains
 	p += "DIAM 0.1000\n";
-	p += "POST -0.500 0.0000 0.0000\n";
+	p += "POST 0.000 0.0000 0.0000\n";
 	p += "VELO 0.0000 0.0000 0.0000\n";
-	p += "NXYZ 4 1 4\n";
+	p += "NXYZ 10 1 10\n";
 	p += "NRAT 0.5\n"; // 20240720 ratio of prograins to neugrains [0, 1]
+	p += "CONF 1\n";
 	p += "\n";
 	p += "# Iteration\n";
 	p += "TBEG 0\n";
@@ -103,8 +109,8 @@ function initParams() {
 	p += "TPRC 1\n";
 	p += "\n";
 	p += "# Coordinates\n";
-	p += "RMIN -1.00 -0.25 -1.00\n";
-	p += "RMAX +1.00 +0.25 +1.00\n";
+	p += "RMIN -2.0 -0.25 -2.0\n";
+	p += "RMAX +2.0 +0.25 +2.0\n";
 	p += "\n";
 	
 	params = p;
@@ -132,7 +138,15 @@ function readParams() {
 	wT = getValue("WTIM").from(taIn);
 	wL = getValue("WLEN").from(taIn);
 	dx = getValue("LSTP").from(taIn);
-
+	
+  // 20240723 stationary wave
+  wstat = getValue("WSTA").from(taIn);
+  //console.log(wstat);
+  
+  // 20240723 configuration
+  pconf = getValue("CONF").from(taIn);
+  //console.log(pconf);
+  
 	iter = 0;
 	Niter = Math.floor(Tdata / dt);
 	t = tbeg;
@@ -175,18 +189,47 @@ function readParams() {
         } else {
           oi.q = 0;
         }
-				
-				var rndx = 0.01 * D * Math.random();
-				var rndy = 0.00 * D * Math.random();
-				var rndz = 0.01 * D * Math.random();
-				
-				var x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx);
-				var y = D * (iy - 0.5 * (Ny - 1)) * (1 + rndy);
-				var z = D * (iz - 0.5 * (Nz - 1)) * (1 + rndz);
-				oi.r = Vect3.add(r, new Vect3(x, y, z));
-				oi.v = v;
-				oi.c = ["#f00"];
-				o.push(oi);
+        
+        
+        // from befor 20240723.
+        if(pconf == 0) {
+          var rndx = 0.01 * D * Math.random();
+          var rndy = 0.00 * D * Math.random();
+          var rndz = 0.01 * D * Math.random();
+          
+          var x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx);
+          var y = D * (iy - 0.5 * (Ny - 1)) * (1 + rndy);
+          var z = D * (iz - 0.5 * (Nz - 1)) * (1 + rndz);
+          oi.r = Vect3.add(r, new Vect3(x, y, z));
+          oi.v = v;
+          oi.c = ["#f00"];
+          o.push(oi);
+        }
+        
+        // 20240723 create hexagonal close packed configuration.
+        if(pconf == 1) {
+          var rndx = 0.00 * D * Math.random();
+          var rndy = 0.00 * D * Math.random();
+          var rndz = 0.00 * D * Math.random();
+          
+          var x;
+          if(iz % 2 == 0) {
+            x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx);
+          } else {
+            x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx + 0.125);
+          }
+          
+          var z = D * (iz - 0.5 * (Nz - 1)) * (1 + rndz);
+          
+          var y = D * (iy - 0.5 * (Ny - 1)) * (1 + rndy);
+          oi.r = Vect3.add(r, new Vect3(x, y, z));
+          oi.v = v;
+          oi.c = ["#f00"];
+          o.push(oi);
+        }
+        
+        // Other configuration
+        
 			}
 		}
 	}
@@ -420,7 +463,12 @@ function waveFunction() {
 	var omega = 2 * Math.PI / T;
 	var k = 2 * Math.PI / lambda;
 	
-	var y = A * Math.sin(k * x - omega * t);
+	var yr = A * Math.sin(k * x - omega * t);
+	var yl = A * Math.sin(k * x + omega * t);
+  
+  // 20240723 stationary wave
+  //console.log(wstat);
+  var y = (wstat == 1) ? yr + yl : yr;
 	return y;
 }
 
