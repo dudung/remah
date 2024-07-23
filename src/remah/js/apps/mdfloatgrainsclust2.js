@@ -12,6 +12,7 @@
   1441 Remove wave.
   1544 Create two layer HPC.
   1620 It explodes with uknnown reason.
+  1704 Create circle layer per layer, now 150 particles.
   
   20240720
   1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
@@ -175,14 +176,14 @@ function initParams() {
 	p += "GACC 0 -9.8067 0\n";
 	p += "\n";
 	p += "# Interaction\n";
-	p += "KNXX 10000\n";
+	p += "KNXX 1000\n";
 	p += "GNXX 10\n";
-	p += "KAXX 0.01\n";
+	p += "KAXX 0.04\n";
 	p += "KBXX 0.02\n";  // 20240723 binding force
 	p += "GBXX 0.1\n";  // 20240723 binding force
-	p += "LBXX 0.1\n";  // 20240723 binding force
-	p += "LBMX 0.2\n";  // 20240723 binding force
-	p += "KQXX 2.0\n";  // 20240720 electrostatic constant
+	p += "LBXX 0.55\n";  // 20240723 binding force
+	p += "LBMX 1.0\n";  // 20240723 binding force
+	p += "KQXX 4.0\n";  // 20240720 electrostatic constant
 	p += "\n";
 	p += "# Particle\n";
 	p += "RHOG 500.0\n";
@@ -191,8 +192,8 @@ function initParams() {
 	p += "POST 0.000 0.0000 0.0000\n";
 	p += "VELO 0.0000 0.0000 0.0000\n";
 	p += "NXYZ 10 1 10\n";
-	p += "NPRO 10\n"; // 92
-	p += "NNEU 50\n"; // 148
+	p += "NPRO 92\n"; // 92
+	p += "NNEU 148\n"; // 148
 	p += "NRAT 0.5\n"; // 20240720 ratio of prograins to neugrains [0, 1]
 	p += "CONF 2\n";
 	p += "\n";
@@ -304,16 +305,40 @@ function readParams() {
         let yy = rr * Math.sin(j * Math.PI / 3.0);        
         oi.r = new Vect3(xx, 0, yy);
       } else if(7 <= i && i <= 18) {
-        let j = i - 1;
-        let rr = 2.3 * D;
+        let j = i - 7;
+        let rr = 2.1 * D;
         let xx = rr * Math.cos(j * Math.PI / 6.0 + 0.1);
         let yy = rr * Math.sin(j * Math.PI / 6.0 + 0.1);        
         oi.r = new Vect3(xx, 0, yy);
       } else if(19 <= i && i <= 34) {
-        let j = i - 1;
-        let rr = 3.5 * D;
+        let j = i - 19;
+        let rr = 3.2 * D;
         let xx = rr * Math.cos(j * Math.PI / 8.0 + 0.2);
         let yy = rr * Math.sin(j * Math.PI / 8.0 + 0.2);        
+        oi.r = new Vect3(xx, 0, yy);
+      } else if(35 <= i && i <= 54) {
+        let j = i - 35;
+        let rr = 4.3 * D;
+        let xx = rr * Math.cos(j * Math.PI / 10.0 + 0.3);
+        let yy = rr * Math.sin(j * Math.PI / 10.0 + 0.3);        
+        oi.r = new Vect3(xx, 0, yy);
+      } else if(55 <= i && i <= 82) {
+        let j = i - 55;
+        let rr = 5.4 * D;
+        let xx = rr * Math.cos(j * Math.PI / 14.0 - 0.1);
+        let yy = rr * Math.sin(j * Math.PI / 14.0 - 0.1);        
+        oi.r = new Vect3(xx, 0, yy);
+      } else if(83 <= i && i <= 114) {
+        let j = i - 83;
+        let rr = 6.5 * D;
+        let xx = rr * Math.cos(j * Math.PI / 16.0 + 0.1);
+        let yy = rr * Math.sin(j * Math.PI / 16.0 + 0.1);        
+        oi.r = new Vect3(xx, 0, yy);
+      } else if(114 <= i && i <= 150) {
+        let j = i - 114;
+        let rr = 7.6 * D;
+        let xx = rr * Math.cos(j * Math.PI / 18.0 + 0.2);
+        let yy = rr * Math.sin(j * Math.PI / 18.0 + 0.2);        
         oi.r = new Vect3(xx, 0, yy);
       }
       
