@@ -12,6 +12,7 @@
   1316 Finish merge mdfhcp.js and butiran.min.js v29 in this file.
   1411 Fix false edit between apps and temp for mdfloatgrainsclust.
   1603 Fix total particle in generating prograins by Nrat.
+  1100 create other binding force.
   
   --
   mdfhcp.js
@@ -45,6 +46,86 @@
 		 url https://doi.org/10.17605/osf.io/a3gjv
 */
 
+
+/*
+  Define class of binding
+  
+	Sparisoma Viridi | dudung@gmail.com
+  Rizal Kurniadi | rijalk@itb.ac.id
+  
+  20240723 Start this type of force.
+  1101 Begin this class by modifying spring.js file.
+*/
+  
+// Define class of Binding
+class Binding {
+	// Create constructor
+	constructor() {
+		// Set default spring constant
+		this.k = 1; // N m^-1 
+		
+		// Set default spring uncompressed length
+		this.l = 1; // m
+		
+		// Set default damping constant
+		this.gamma = 1; // N s m^-1
+		
+		// Set maximum length
+		this.lmax = 2 * this.l ; // m
+	}
+	
+	// Set constants
+	setConstants(k, gamma) {
+		this.k = k;
+		this.gamma = gamma;
+	}
+	
+	// Set uncompressed length
+	setUncompressedLength(l) {
+		this.l = l;
+	}
+		
+	// Set max length
+	setMaxLength(lmax) {
+		this.lmax = lmax;
+	}
+		
+	// Calculate spring force
+	force() {
+		var f = new Vect3;
+    if(arguments[0] instanceof Grain &&
+      arguments[1] instanceof Grain) {
+      var r1 = arguments[0].r;
+      var r2 = arguments[1].r;
+      var r12 = Vect3.sub(r1, r2);
+      var u12 = r12.unit();
+      var l12 = r12.len();
+      var l = this.l;
+      
+      if(l12 < this.lmax) {
+        
+        var v1 = arguments[0].v;
+        var v2 = arguments[1].v;
+        var v12 = Vect3.sub(v1, v2);
+        var k = this.k;
+        var gamma = this.gamma;
+        var ksi = l12 - l;
+        var ksidot = v12.len();
+        
+        var fr = Vect3.mul(-k * ksi, u12);
+        var fv = Vect3.mul(-gamma * ksidot, v12);
+        
+        f = Vect3.add(fr, fv);
+      }
+    }
+		
+		return f;
+	}
+}
+
+// --- end of binding force ---//
+
+
 // Define global variables
 var params;
 var taIn, taOut, caOut1, caOut2, caOut3, caOut4;
@@ -58,6 +139,7 @@ var wA, wT, wL;
 var o, pconf;
 var buoyant, gravitational, drag, normal, attractive;
 var electrostatic; // 20240720 electrostatic force
+var binding; // 20240723 binding force
 var ND;
 
 // Execute main function
@@ -75,9 +157,9 @@ function main() {
 function initParams() {
 	var p = "";
 	p += "# Environment\n";
-	p += "WAMP 0.004\n";
-	p += "WTIM 0.500\n";
-	p += "WLEN 0.450\n";
+	p += "WAMP 0.01\n";
+	p += "WTIM 0.200\n";
+	p += "WLEN 0.40\n";
 	p += "WSTA 1\n";  // 20240723 stationary wave
 	p += "LSTP 0.0100\n";
 	p += "RHOF 1000.0\n";
@@ -86,14 +168,18 @@ function initParams() {
 	p += "GACC 0 -9.8067 0\n";
 	p += "\n";
 	p += "# Interaction\n";
-	p += "KNXX 1000\n";
-	p += "GNXX 0.5\n";
+	p += "KNXX 10000\n";
+	p += "GNXX 10\n";
 	p += "KAXX 0.01\n";
-	p += "KQXX 0.04\n";  // 20240720 electrostatic constant
+	p += "KBXX 0.02\n";  // 20240723 binding force
+	p += "GBXX 0.1\n";  // 20240723 binding force
+	p += "LBXX 0.2\n";  // 20240723 binding force
+	p += "LBMX 0.4\n";  // 20240723 binding force
+	p += "KQXX 2.0\n";  // 20240720 electrostatic constant
 	p += "\n";
 	p += "# Particle\n";
 	p += "RHOG 500.0\n";
-	p += "CHRG 0.2\n";  // 20240720 charge for prograins, not for neugrains
+	p += "CHRG 0.28\n";  // 20240720 charge for prograins, not for neugrains
 	p += "DIAM 0.1000\n";
 	p += "POST 0.000 0.0000 0.0000\n";
 	p += "VELO 0.0000 0.0000 0.0000\n";
@@ -103,7 +189,7 @@ function initParams() {
 	p += "\n";
 	p += "# Iteration\n";
 	p += "TBEG 0\n";
-	p += "TEND 20\n";
+	p += "TEND 100\n";
 	p += "TSTP 0.005\n";
 	p += "TDAT 1.000\n";
 	p += "TPRC 1\n";
@@ -219,7 +305,7 @@ function readParams() {
             x = D * (ix - 0.5 * (Nx - 1)) * (1 + rndx + 0.125);
           }
           
-          var z = D * (iz - 0.5 * (Nz - 1)) * (1 + rndz);
+          var z = D * (iz - 0.5 * (Nz - 1)) * (1 + rndz + 0.05);
           
           var y = D * (iy - 0.5 * (Ny - 1)) * (1 + rndy);
           oi.r = Vect3.add(r, new Vect3(x, y, z));
@@ -262,7 +348,18 @@ function readParams() {
   // 20240720 electrostatic force
 	electrostatic = new Electrostatic();
 	electrostatic.setConstant(kQ);
-
+  
+  // 20240723 binding force
+	var kB = getValue("KBXX").from(taIn);
+	var gB = getValue("GBXX").from(taIn);
+	var lB = getValue("LBXX").from(taIn);
+	var lBmax = getValue("LBMX").from(taIn);
+	binding = new Binding();
+	binding.setConstants(kB, gB);
+  binding.setUncompressedLength(lB);
+  binding.setMaxLength(lBmax);
+  console.log(kB, gB, lB, lBmax);
+  
 	var rmin = getValue("RMIN").from(taIn);
 	var rmax = getValue("RMAX").from(taIn);
 	
@@ -345,7 +442,7 @@ function createVisualElements() {
 	
 	// Create canvas for output
 	caOut1 = document.createElement("canvas");
-	caOut1.width = "330";
+	caOut1.width = "430";
 	caOut1.height = "110";
 	with(caOut1.style) {
 		width = caOut1.width +  "px";
@@ -354,8 +451,8 @@ function createVisualElements() {
 		background = "#fff";
 	}
 	caOut2 = document.createElement("canvas");
-	caOut2.width = "330";
-	caOut2.height = "330";
+	caOut2.width = "430";
+	caOut2.height = "430";
 	with(caOut2.style) {
 		width = caOut2.width +  "px";
 		height = caOut2.height +  "px";
@@ -601,6 +698,8 @@ function simulate() {
 		}
 		F = Vect3.add(F, Fn);
 		
+    /*
+    
 		// Calculate attractive force
 		var Fa = new Vect3();
 		for(var j = 0; j < o.length; j++) {
@@ -620,6 +719,19 @@ function simulate() {
 			}
 		}
 		F = Vect3.add(F, Fq);
+    
+    */
+    
+    
+    // 20240723 Calculate binding force
+		var Fb = new Vect3();
+		for(var j = 0; j < o.length; j++) {
+			if(j != i) {
+				var Fbi = binding.force(o[i], o[j]);
+				Fb = Vect3.add(Fb, Fbi);
+			}
+		}
+		F = Vect3.add(F, Fb);
     
 		SF.push(F);
 	}
