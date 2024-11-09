@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='remah',
-    version='0.0.5',
+    version='0.0.6',
     packages=find_packages(where='src/remah/python'),
     package_dir={'': 'src/remah/python'},
     install_requires=[
